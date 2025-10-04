@@ -1,7 +1,11 @@
-# focus
+# Focus
 
-Use llm tools to help me summarize somethings which I focus on.
+An LLM agent that helps you preprocess (classify, extract keywords, etc.) anything you're interested in.
 
-There are something I wanna focus:
-- oxc pr/issue in my interested.
-- github trending in my interested.
+For example, if you're interested in compiler front-end implementation, you can configure specific information sources to automatically preprocess them on a daily or weekly basis.
+
+## Usage
+
+### Setup
+
+todo
