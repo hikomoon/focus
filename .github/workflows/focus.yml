@@ -1,0 +1,40 @@
+name: Focus on Oxc
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  run-focus:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh jq
+
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Fetch latest issues
+        run: |
+          echo "Fetching issues from upstream..."
+          gh issue list --repo oxc-project/oxc --limit 5 --json number,title,url > issues.json
+          cat issues.json | jq .
+
+      - name: Fetch latest pull requests
+        run: |
+          echo "Fetching PRs from upstream..."
+          gh pr list --repo oxc-project/oxc --limit 5 --json number,title,url > prs.json
+          cat prs.json | jq .
+
+      - name: Call LLM API with PR summary
+        run: |
+          DATA=$(jq -c . < prs.json)
+          RESPONSE=$(curl -s -X POST https://apifreellm.com/api/chat \
+            -H "Content-Type: application/json" \
+            -d "{\"inputs\": \"Summarize these PRs: $DATA\"}")
+          echo "LLM Response:"
+          echo "$RESPONSE" | jq .
