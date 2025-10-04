@@ -1,0 +1,8 @@
+# information source
+urls: []
+repos: ["oxc-project/oxc"]
+# focus on
+keywords: ["parser", "ast", "recursive descent parser", "compiler"]
+
+look_back: 86400
+cron: '0 0 * * *'
